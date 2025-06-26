@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-BrainDriveChat Plugin Lifecycle Manager (New Architecture)
+OpenAPIBrainDrive Plugin Lifecycle Manager (New Architecture)
 
-This script handles install/update/delete operations for the BrainDriveChat plugin
+This script handles install/update/delete operations for the OpenAPIBrainDrive plugin
 using the new multi-user plugin lifecycle management architecture.
 """
 
@@ -89,11 +89,11 @@ except ImportError:
             
     except ImportError as e:
         logger.error(f"Failed to import BaseLifecycleManager: {e}")
-        raise ImportError("BrainDriveChat plugin requires the new architecture BaseLifecycleManager")
+        raise ImportError("OpenAPIBrainDrive plugin requires the new architecture BaseLifecycleManager")
 
 
-class BrainDriveChatLifecycleManager(BaseLifecycleManager):
-    """Lifecycle manager for BrainDriveChat plugin using new architecture"""
+class OpenAPIBrainDriveLifecycleManager(BaseLifecycleManager):
+    """Lifecycle manager for OpenAPIBrainDrive plugin using new architecture"""
     
     def __init__(self, plugins_base_dir: str = None):
         """Initialize the lifecycle manager"""
@@ -108,12 +108,12 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             "official": True,
             "author": "Amir sharif",
             "compatibility": "1.0.0",
-            "scope": "BrainDriveChat",
+            "scope": "OpenAPIBrainDrive",
             "bundle_method": "webpack",
             "bundle_location": "dist/remoteEntry.js",
             "is_local": False,
             "long_description": "A unified AI chat interface that combines AI prompt chat, model selection, and conversation history management in a single, responsive plugin with light/dark theme support.",
-            "plugin_slug": "BrainDriveChat",
+            "plugin_slug": "OpenAPIBrainDrive",
             # Update tracking fields (matching plugin model)
             "source_type": "github",
             "source_url": "https://github.com/hamzaMansoor1236/OpenAPIBrainDrive",
@@ -190,7 +190,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
         ]
         
         # Initialize base class with required parameters
-        logger.info(f"BrainDriveChat: plugins_base_dir - {plugins_base_dir}")
+        logger.info(f"OpenAPIBrainDrive: plugins_base_dir - {plugins_base_dir}")
         if plugins_base_dir:
             # When instantiated by the remote installer, plugins_base_dir points to the plugins directory
             # Shared plugins are stored under plugins_base_dir/shared/plugin_slug/version
@@ -199,7 +199,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             # When running from the PluginBuild directory during development,
             # resolve the path to backend/plugins/shared
             shared_path = Path(__file__).parent.parent.parent / "backend" / "plugins" / "shared" / self.plugin_data['plugin_slug'] / f"v{self.plugin_data['version']}"
-        logger.info(f"BrainDriveChat: shared_path - {shared_path}")
+        logger.info(f"OpenAPIBrainDrive: shared_path - {shared_path}")
         super().__init__(
             plugin_slug=self.plugin_data['plugin_slug'],
             version=self.plugin_data['version'],
@@ -227,7 +227,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             if not db_result['success']:
                 return db_result
             
-            logger.info(f"BrainDriveChat: User installation completed for {user_id}")
+            logger.info(f"OpenAPIBrainDrive: User installation completed for {user_id}")
             return {
                 'success': True,
                 'plugin_id': db_result['plugin_id'],
@@ -237,7 +237,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             }
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: User installation failed for {user_id}: {e}")
+            logger.error(f"OpenAPIBrainDrive: User installation failed for {user_id}: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _perform_user_uninstallation(self, user_id: str, db: AsyncSession) -> Dict[str, Any]:
@@ -255,7 +255,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             if not delete_result['success']:
                 return delete_result
             
-            logger.info(f"BrainDriveChat: User uninstallation completed for {user_id}")
+            logger.info(f"OpenAPIBrainDrive: User uninstallation completed for {user_id}")
             return {
                 'success': True,
                 'plugin_id': plugin_id,
@@ -263,12 +263,12 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             }
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: User uninstallation failed for {user_id}: {e}")
+            logger.error(f"OpenAPIBrainDrive: User uninstallation failed for {user_id}: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _copy_plugin_files_impl(self, user_id: str, target_dir: Path, update: bool = False) -> Dict[str, Any]:
         """
-        BrainDriveChat-specific implementation of file copying.
+        OpenAPIBrainDrive-specific implementation of file copying.
         This method is called by the base class during installation.
         Copies all files from the plugin source directory to the target directory.
         """
@@ -347,20 +347,20 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                 copied_files.append('lifecycle_manager.py')
                 logger.info(f"Copied lifecycle_manager.py")
             
-            logger.info(f"BrainDriveChat: Copied {len(copied_files)} files/directories to {target_dir}")
+            logger.info(f"OpenAPIBrainDrive: Copied {len(copied_files)} files/directories to {target_dir}")
             return {'success': True, 'copied_files': copied_files}
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error copying plugin files: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error copying plugin files: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _validate_installation_impl(self, user_id: str, plugin_dir: Path) -> Dict[str, Any]:
         """
-        BrainDriveChat-specific validation logic.
+        OpenAPIBrainDrive-specific validation logic.
         This method is called by the base class during installation.
         """
         try:
-            # Check for BrainDriveChat-specific required files
+            # Check for OpenAPIBrainDrive-specific required files
             required_files = ["package.json", "dist/remoteEntry.js"]
             missing_files = []
             
@@ -371,7 +371,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             if missing_files:
                 return {
                     'valid': False,
-                    'error': f"BrainDriveChat: Missing required files: {', '.join(missing_files)}"
+                    'error': f"OpenAPIBrainDrive: Missing required files: {', '.join(missing_files)}"
                 }
             
             # Validate package.json structure
@@ -386,13 +386,13 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                     if field not in package_data:
                         return {
                             'valid': False,
-                            'error': f'BrainDriveChat: package.json missing required field: {field}'
+                            'error': f'OpenAPIBrainDrive: package.json missing required field: {field}'
                         }
                         
             except (json.JSONDecodeError, FileNotFoundError) as e:
                 return {
                     'valid': False,
-                    'error': f'BrainDriveChat: Invalid or missing package.json: {e}'
+                    'error': f'OpenAPIBrainDrive: Invalid or missing package.json: {e}'
                 }
             
             # Validate bundle file exists and is not empty
@@ -400,19 +400,19 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             if bundle_path.stat().st_size == 0:
                 return {
                     'valid': False,
-                    'error': 'BrainDriveChat: Bundle file (remoteEntry.js) is empty'
+                    'error': 'OpenAPIBrainDrive: Bundle file (remoteEntry.js) is empty'
                 }
             
-            logger.info(f"BrainDriveChat: Installation validation passed for user {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Installation validation passed for user {user_id}")
             return {'valid': True}
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error validating installation: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error validating installation: {e}")
             return {'valid': False, 'error': str(e)}
     
     async def _get_plugin_health_impl(self, user_id: str, plugin_dir: Path) -> Dict[str, Any]:
         """
-        BrainDriveChat-specific health check logic.
+        OpenAPIBrainDrive-specific health check logic.
         This method is called by the base class during status checks.
         """
         try:
@@ -457,7 +457,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             }
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error checking plugin health: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error checking plugin health: {e}")
             return {
                 'healthy': False,
                 'details': {'error': str(e)}
@@ -467,13 +467,13 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
         """Check if plugin already exists for user"""
         try:
             plugin_slug = self.plugin_data['plugin_slug']
-            logger.info(f"BrainDriveChat: Checking for existing plugin - user_id: {user_id}, plugin_slug: {plugin_slug}")
+            logger.info(f"OpenAPIBrainDrive: Checking for existing plugin - user_id: {user_id}, plugin_slug: {plugin_slug}")
             
             # First test database connectivity
             test_query = text("SELECT COUNT(*) as count FROM plugin")
             test_result = await db.execute(test_query)
             test_row = test_result.fetchone()
-            logger.info(f"BrainDriveChat: Database connectivity test - total plugins: {test_row.count}")
+            logger.info(f"OpenAPIBrainDrive: Database connectivity test - total plugins: {test_row.count}")
             
             plugin_query = text("""
             SELECT id, name, version, enabled, created_at, updated_at, plugin_slug
@@ -485,14 +485,14 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                 'user_id': user_id,
                 'plugin_slug': plugin_slug
             }
-            logger.info(f"BrainDriveChat: Executing query with params: {query_params}")
+            logger.info(f"OpenAPIBrainDrive: Executing query with params: {query_params}")
             
             result = await db.execute(plugin_query, query_params)
             
             plugin_row = result.fetchone()
-            logger.info(f"BrainDriveChat: Query result: {plugin_row}")
+            logger.info(f"OpenAPIBrainDrive: Query result: {plugin_row}")
             if plugin_row:
-                logger.info(f"BrainDriveChat: Found existing plugin - id: {plugin_row.id}, name: {plugin_row.name}")
+                logger.info(f"OpenAPIBrainDrive: Found existing plugin - id: {plugin_row.id}, name: {plugin_row.name}")
                 return {
                     'exists': True,
                     'plugin_id': plugin_row.id,
@@ -506,23 +506,23 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                     }
                 }
             else:
-                logger.warning(f"BrainDriveChat: No plugin found for user_id: {user_id}, plugin_slug: {plugin_slug}")
+                logger.warning(f"OpenAPIBrainDrive: No plugin found for user_id: {user_id}, plugin_slug: {plugin_slug}")
                 
                 # Debug: Check if there are any plugins for this user
                 debug_query = text("SELECT id, plugin_slug FROM plugin WHERE user_id = :user_id")
                 debug_result = await db.execute(debug_query, {'user_id': user_id})
                 debug_rows = debug_result.fetchall()
                 if debug_rows:
-                    logger.info(f"BrainDriveChat: User has {len(debug_rows)} other plugins:")
+                    logger.info(f"OpenAPIBrainDrive: User has {len(debug_rows)} other plugins:")
                     for row in debug_rows:
                         logger.info(f"  - {row.plugin_slug} (id: {row.id})")
                 else:
-                    logger.info(f"BrainDriveChat: User has no plugins installed")
+                    logger.info(f"OpenAPIBrainDrive: User has no plugins installed")
                 
                 return {'exists': False}
                 
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error checking existing plugin: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error checking existing plugin: {e}")
             return {'exists': False, 'error': str(e)}
     
     async def _create_database_records(self, user_id: str, db: AsyncSession) -> Dict[str, Any]:
@@ -532,7 +532,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             plugin_slug = self.plugin_data['plugin_slug']
             plugin_id = f"{user_id}_{plugin_slug}"
             
-            logger.info(f"BrainDriveChat: Creating database records - user_id: {user_id}, plugin_slug: {plugin_slug}, plugin_id: {plugin_id}")
+            logger.info(f"OpenAPIBrainDrive: Creating database records - user_id: {user_id}, plugin_slug: {plugin_slug}, plugin_id: {plugin_id}")
             
             plugin_stmt = text("""
             INSERT INTO plugin
@@ -629,7 +629,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             
             # Commit the transaction
             await db.commit()
-            logger.info(f"BrainDriveChat: Database transaction committed successfully")
+            logger.info(f"OpenAPIBrainDrive: Database transaction committed successfully")
             
             # Verify the plugin was actually created
             verify_query = text("SELECT id, plugin_slug FROM plugin WHERE id = :plugin_id AND user_id = :user_id")
@@ -637,9 +637,9 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             verify_row = verify_result.fetchone()
             
             if verify_row:
-                logger.info(f"BrainDriveChat: Successfully created and verified database records for plugin {plugin_id} with {len(modules_created)} modules")
+                logger.info(f"OpenAPIBrainDrive: Successfully created and verified database records for plugin {plugin_id} with {len(modules_created)} modules")
             else:
-                logger.error(f"BrainDriveChat: Plugin creation appeared to succeed but verification failed for plugin_id: {plugin_id}")
+                logger.error(f"OpenAPIBrainDrive: Plugin creation appeared to succeed but verification failed for plugin_id: {plugin_id}")
                 return {'success': False, 'error': 'Plugin creation verification failed'}
             
             return {'success': True, 'plugin_id': plugin_id, 'modules_created': modules_created}
@@ -745,18 +745,18 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                 'export_timestamp': datetime.datetime.now().isoformat()
             }
             
-            logger.info(f"BrainDriveChat: Exported user data for {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Exported user data for {user_id}")
             return {'success': True, 'user_data': user_data}
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error exporting user data: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error exporting user data: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _import_user_data(self, user_id: str, db: AsyncSession, user_data: Dict[str, Any]):
         """Import user-specific data after migration during updates"""
         try:
             if not user_data:
-                logger.info(f"BrainDriveChat: No user data to import for {user_id}")
+                logger.info(f"OpenAPIBrainDrive: No user data to import for {user_id}")
                 return
             
             plugin_config = user_data.get('plugin_config', {})
@@ -795,10 +795,10 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                     'user_id': user_id
                 })
             
-            logger.info(f"BrainDriveChat: Imported user data for {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Imported user data for {user_id}")
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error importing user data: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error importing user data: {e}")
             raise
     
     def get_plugin_info(self) -> Dict[str, Any]:
@@ -812,14 +812,14 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
     
     # Compatibility methods for old interface
     async def install_plugin(self, user_id: str, db: AsyncSession) -> Dict[str, Any]:
-        """Install BrainDriveChat plugin for specific user (compatibility method)"""
+        """Install OpenAPIBrainDrive plugin for specific user (compatibility method)"""
         try:
-            logger.info(f"BrainDriveChat: Starting installation for user {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Starting installation for user {user_id}")
             
             # Check if plugin is already installed for this user
             existing_check = await self._check_existing_plugin(user_id, db)
             if existing_check['exists']:
-                logger.warning(f"BrainDriveChat: Plugin already installed for user {user_id}")
+                logger.warning(f"OpenAPIBrainDrive: Plugin already installed for user {user_id}")
                 return {
                     'success': False,
                     'error': 'Plugin already installed for user',
@@ -828,15 +828,15 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             
             shared_path = self.shared_path
             shared_path.mkdir(parents=True, exist_ok=True)
-            logger.info(f"BrainDriveChat: Created shared directory: {shared_path}")
+            logger.info(f"OpenAPIBrainDrive: Created shared directory: {shared_path}")
 
             # Copy plugin files to the shared directory first
             copy_result = await self._copy_plugin_files_impl(user_id, shared_path)
             if not copy_result['success']:
-                logger.error(f"BrainDriveChat: File copying failed: {copy_result.get('error')}")
+                logger.error(f"OpenAPIBrainDrive: File copying failed: {copy_result.get('error')}")
                 return copy_result
 
-            logger.info(f"BrainDriveChat: Files copied successfully, proceeding with database installation")
+            logger.info(f"OpenAPIBrainDrive: Files copied successfully, proceeding with database installation")
             
             # Ensure we're in a transaction
             try:
@@ -846,21 +846,21 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                     # Verify the installation was successful
                     verify_check = await self._check_existing_plugin(user_id, db)
                     if not verify_check['exists']:
-                        logger.error(f"BrainDriveChat: Installation appeared successful but verification failed")
+                        logger.error(f"OpenAPIBrainDrive: Installation appeared successful but verification failed")
                         return {'success': False, 'error': 'Installation verification failed'}
                     
-                    logger.info(f"BrainDriveChat: Installation verified successfully for user {user_id}")
+                    logger.info(f"OpenAPIBrainDrive: Installation verified successfully for user {user_id}")
                     result.update({
                         'plugin_slug': self.plugin_data['plugin_slug'],
                         'plugin_name': self.plugin_data['name']
                     })
                 else:
-                    logger.error(f"BrainDriveChat: Database installation failed: {result.get('error')}")
+                    logger.error(f"OpenAPIBrainDrive: Database installation failed: {result.get('error')}")
                 
                 return result
                 
             except Exception as db_error:
-                logger.error(f"BrainDriveChat: Database operation failed: {db_error}")
+                logger.error(f"OpenAPIBrainDrive: Database operation failed: {db_error}")
                 # Try to rollback if possible
                 try:
                     await db.rollback()
@@ -869,30 +869,30 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
                 return {'success': False, 'error': f'Database operation failed: {str(db_error)}'}
                 
         except Exception as e:
-            logger.error(f"BrainDriveChat: Install plugin failed: {e}")
+            logger.error(f"OpenAPIBrainDrive: Install plugin failed: {e}")
             return {'success': False, 'error': str(e)}
     
     async def delete_plugin(self, user_id: str, db: AsyncSession) -> Dict[str, Any]:
-        """Delete BrainDriveChat plugin for user (compatibility method)"""
+        """Delete OpenAPIBrainDrive plugin for user (compatibility method)"""
         try:
-            logger.info(f"BrainDriveChat: Starting deletion for user {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Starting deletion for user {user_id}")
             
             # Let the base class handle the deletion - it will call _perform_user_uninstallation
             # which includes the database check
             result = await self.uninstall_for_user(user_id, db)
             
             if result.get('success'):
-                logger.info(f"BrainDriveChat: Successfully deleted plugin for user {user_id}")
+                logger.info(f"OpenAPIBrainDrive: Successfully deleted plugin for user {user_id}")
             else:
-                logger.error(f"BrainDriveChat: Deletion failed: {result.get('error')}")
+                logger.error(f"OpenAPIBrainDrive: Deletion failed: {result.get('error')}")
             
             return result
         except Exception as e:
-            logger.error(f"BrainDriveChat: Delete plugin failed: {e}")
+            logger.error(f"OpenAPIBrainDrive: Delete plugin failed: {e}")
             return {'success': False, 'error': str(e)}
     
     async def get_plugin_status(self, user_id: str, db: AsyncSession) -> Dict[str, Any]:
-        """Get current status of BrainDriveChat plugin installation (compatibility method)"""
+        """Get current status of OpenAPIBrainDrive plugin installation (compatibility method)"""
         try:
             existing_check = await self._check_existing_plugin(user_id, db)
             if not existing_check['exists']:
@@ -910,11 +910,11 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             }
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Error checking plugin status: {e}")
+            logger.error(f"OpenAPIBrainDrive: Error checking plugin status: {e}")
             return {'exists': False, 'status': 'error', 'error': str(e)}
     
-    async def update_plugin(self, user_id: str, db: AsyncSession, new_version_manager: 'BrainDriveChatLifecycleManager') -> Dict[str, Any]:
-        """Update BrainDriveChat plugin for user (compatibility method)"""
+    async def update_plugin(self, user_id: str, db: AsyncSession, new_version_manager: 'OpenAPIBrainDriveLifecycleManager') -> Dict[str, Any]:
+        """Update OpenAPIBrainDrive plugin for user (compatibility method)"""
         try:
             # Export current user data
             export_result = await self._export_user_data(user_id, db)
@@ -934,7 +934,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             # Import user data to new version
             await new_version_manager._import_user_data(user_id, db, export_result.get('user_data', {}))
             
-            logger.info(f"BrainDriveChat: Plugin updated successfully for user {user_id}")
+            logger.info(f"OpenAPIBrainDrive: Plugin updated successfully for user {user_id}")
             return {
                 'success': True,
                 'old_version': self.version,
@@ -943,25 +943,25 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             }
             
         except Exception as e:
-            logger.error(f"BrainDriveChat: Plugin update failed for user {user_id}: {e}")
+            logger.error(f"OpenAPIBrainDrive: Plugin update failed for user {user_id}: {e}")
             return {'success': False, 'error': str(e)}
 
 
 # Standalone functions for compatibility with remote installer
 async def install_plugin(user_id: str, db: AsyncSession, plugins_base_dir: str = None) -> Dict[str, Any]:
-    manager = BrainDriveChatLifecycleManager(plugins_base_dir)
+    manager = OpenAPIBrainDriveLifecycleManager(plugins_base_dir)
     return await manager.install_plugin(user_id, db)
 
 async def delete_plugin(user_id: str, db: AsyncSession, plugins_base_dir: str = None) -> Dict[str, Any]:
-    manager = BrainDriveChatLifecycleManager(plugins_base_dir)
+    manager = OpenAPIBrainDriveLifecycleManager(plugins_base_dir)
     return await manager.delete_plugin(user_id, db)
 
 async def get_plugin_status(user_id: str, db: AsyncSession, plugins_base_dir: str = None) -> Dict[str, Any]:
-    manager = BrainDriveChatLifecycleManager(plugins_base_dir)
+    manager = OpenAPIBrainDriveLifecycleManager(plugins_base_dir)
     return await manager.get_plugin_status(user_id, db)
 
-async def update_plugin(user_id: str, db: AsyncSession, new_version_manager: 'BrainDriveChatLifecycleManager', plugins_base_dir: str = None) -> Dict[str, Any]:
-    old_manager = BrainDriveChatLifecycleManager(plugins_base_dir)
+async def update_plugin(user_id: str, db: AsyncSession, new_version_manager: 'OpenAPIBrainDriveLifecycleManager', plugins_base_dir: str = None) -> Dict[str, Any]:
+    old_manager = OpenAPIBrainDriveLifecycleManager(plugins_base_dir)
     return await old_manager.update_plugin(user_id, db, new_version_manager)
 
 
@@ -971,11 +971,11 @@ if __name__ == "__main__":
     import asyncio
     
     async def main():
-        print("BrainDriveChat Plugin Lifecycle Manager - Test Mode")
+        print("OpenAPIBrainDrive Plugin Lifecycle Manager - Test Mode")
         print("=" * 50)
         
         # Test manager initialization
-        manager = BrainDriveChatLifecycleManager()
+        manager = OpenAPIBrainDriveLifecycleManager()
         print(f"Plugin: {manager.plugin_data['name']}")
         print(f"Version: {manager.plugin_data['version']}")
         print(f"Slug: {manager.plugin_data['plugin_slug']}")
