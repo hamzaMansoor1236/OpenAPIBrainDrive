@@ -106,7 +106,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
             "icon": "MessageSquare",
             "category": "ai",
             "official": True,
-            "author": "BrainDrive",
+            "author": "Amir sharif",
             "compatibility": "1.0.0",
             "scope": "BrainDriveChat",
             "bundle_method": "webpack",
@@ -127,7 +127,7 @@ class BrainDriveChatLifecycleManager(BaseLifecycleManager):
         
         self.module_data = [
             {
-                "name": "BrainDriveChat",
+                "name": "OpenAPIBrainDrive",
                 "display_name": "AI Chat Interface",
                 "description": "Complete AI chat interface with model selection and conversation history",
                 "icon": "MessageSquare",
