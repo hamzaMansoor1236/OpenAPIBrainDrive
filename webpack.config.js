@@ -7,12 +7,12 @@ module.exports = {
   mode: "development",
   entry: "./src/main",
   output: {
-    path: path.resolve(__dirname, './dist'),
+    path: path.resolve(__dirname, 'dist'),
     publicPath: "auto",
     clean: true,
     library: {
       type: 'var',
-      name: 'OpenApiBrainDrive'
+      name: 'OpenAPIBrainDrive'
     }
   },
   resolve: {
@@ -29,19 +29,18 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader',
-          'postcss-loader'
+          'css-loader'
         ]
       }
     ],
   },
   plugins: [
     new ModuleFederationPlugin({
-      name: "OpenApiBrainDrive",
-      library: { type: "var", name: "OpenApiBrainDrive" },
+      name: "OpenAPIBrainDrive",
+      library: { type: "var", name: "OpenAPIBrainDrive" },
       filename: "remoteEntry.js",
       exposes: {
-        "./ComponentNetworkStatus": "./src/ComponentNetworkStatus",
+        "./OpenAPIBrainDrive": "./src/main",
       },
       shared: {
         react: {
@@ -57,11 +56,11 @@ module.exports = {
       }
     }),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: "./index.html",
     }),
   ],
   devServer: {
-    port: 9006,
+    port: 3001,
     static: {
       directory: path.join(__dirname, "public"),
     },
